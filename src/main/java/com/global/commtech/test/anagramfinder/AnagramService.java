@@ -37,11 +37,11 @@ public class AnagramService {
                     wordAdded.set(AnagramService.isAnagram(word, w, outputString, occurenceWord));
                 }
             });
-            if (wordAdded.get() == true) {
+            if (!outputString.toString().endsWith("\n")  ) {
                 outputString.append("\n");
             }
         }
-        return AnagramService.removingDoubleNextLine(outputString.toString());
+        return outputString.toString();
 
     }
 
@@ -65,7 +65,4 @@ public class AnagramService {
         return wordAdded;
     }
 
-    static String removingDoubleNextLine(String s){
-        return s.replace("\n\n","\n");
-    }
 }
