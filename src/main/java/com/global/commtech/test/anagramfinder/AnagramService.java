@@ -9,16 +9,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
 public class AnagramService {
 
-     String outputResult(File file) throws IOException {
+    String outputResult(File file) throws IOException {
         final String FILE_PATH = file.getPath();
         List<String> occurenceWord = new ArrayList<>();
-        AtomicBoolean wordAdded = new AtomicBoolean(true);
 
         List<String> words = Files.lines(Paths.get(FILE_PATH))
                 .map(line -> line.split("\n")).flatMap(Arrays::stream)
@@ -34,10 +32,10 @@ public class AnagramService {
                         outputString.append(word);
                         occurenceWord.add(word);
                     }
-                    wordAdded.set(AnagramService.isAnagram(word, w, outputString, occurenceWord));
+                    isAnagram(word, w, outputString, occurenceWord);
                 }
             });
-            if (!outputString.toString().endsWith("\n")  ) {
+            if (!outputString.toString().endsWith("\n")) {
                 outputString.append("\n");
             }
         }
@@ -45,24 +43,20 @@ public class AnagramService {
 
     }
 
-    static boolean isAnagram(String currentWord, String nextWord, StringBuilder output, List<String> occ) {
+    static void isAnagram(String currentWord, String nextWord, StringBuilder output, List<String> occ) {
 
         char[] wordChar = currentWord.toCharArray();
         char[] wChar = nextWord.toCharArray();
         Arrays.sort(wordChar);
         Arrays.sort(wChar);
-        boolean wordAdded=true;
 
         if (currentWord.length() == nextWord.length() && Arrays.equals(wordChar, wChar)) {
             if (!occ.contains(nextWord)) {
                 output.append(",");
                 output.append(nextWord);
                 occ.add(nextWord);
-            } else {
-                wordAdded= false;
             }
         }
-        return wordAdded;
     }
 
 }
